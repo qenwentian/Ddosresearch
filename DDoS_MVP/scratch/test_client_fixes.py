@@ -3,6 +3,7 @@
 import _thread
 import contextlib
 import csv
+from datetime import datetime
 import io
 from pathlib import Path
 import queue
@@ -149,6 +150,7 @@ def test_interrupt_after_worker_claim():
     claimed = threading.Event()
     release_claim = threading.Event()
     base_queue = queue.Queue
+    timer = threading.Timer(0.5, release_claim.set)
 
     class InterruptDrainQueue(base_queue):
         def get(self, *arguments, **kwargs):
@@ -160,6 +162,7 @@ def test_interrupt_after_worker_claim():
 
         def join(self):
             assert claimed.wait(2)
+            timer.start()
             raise KeyboardInterrupt
 
     with tempfile.TemporaryDirectory() as directory:
@@ -174,6 +177,8 @@ def test_interrupt_after_worker_claim():
                 )
         finally:
             release_claim.set()
+            if timer.is_alive():
+                timer.join()
         with path.open(newline="", encoding="utf-8") as file:
             rows = list(csv.DictReader(file))
         assert result["interrupted"]
@@ -223,6 +228,233 @@ def test_slow_csv_does_not_delay_schedule():
     assert result["scheduling_window_sec"] < 1.5
 
 
+def test_no_request_after_final_report():
+    entered_request = threading.Event()
+    release_request = threading.Event()
+    transmitted = threading.Event()
+    base_queue = queue.Queue
+    real_request = generator.urllib.request.Request
+    timer = threading.Timer(0.2, release_request.set)
+
+    class InterruptDrainQueue(base_queue):
+        def join(self):
+            assert entered_request.wait(2)
+            timer.start()
+            raise KeyboardInterrupt
+
+    class Response:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *arguments):
+            pass
+
+        def read(self):
+            return b"ok"
+
+    def delayed_request(*arguments, **kwargs):
+        entered_request.set()
+        assert release_request.wait(2)
+        return real_request(*arguments, **kwargs)
+
+    def fake_urlopen(*arguments, **kwargs):
+        transmitted.set()
+        return Response()
+
+    with tempfile.TemporaryDirectory() as directory:
+        try:
+            with patch.object(generator.queue, "Queue", InterruptDrainQueue), \
+                 patch.object(generator.urllib.request, "Request", side_effect=delayed_request), \
+                 patch.object(generator.urllib.request, "urlopen", side_effect=fake_urlopen), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                result = generator.run_traffic_generator(
+                    "127.0.0.1", 5000, "attack", 0.0, 10.0,
+                    1, None, 1, 1, 0.1, str(Path(directory) / "client_sent.csv")
+                )
+                assert transmitted.is_set()
+        finally:
+            release_request.set()
+            if timer.is_alive():
+                timer.join()
+    assert result["interrupted"] and result["completed"] == 1
+
+
+def test_interrupt_during_drop_flush():
+    class SlowResponse:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *arguments):
+            pass
+
+        def read(self):
+            time.sleep(0.3)
+            return b"ok"
+
+    real_log = generator.log_special_status
+    for interrupt_after_write in (False, True):
+        interrupted_once = False
+
+        def interrupted_log(*arguments, **kwargs):
+            nonlocal interrupted_once
+            if arguments[10] == "DROPPED" and not interrupted_once:
+                interrupted_once = True
+                if interrupt_after_write:
+                    real_log(*arguments, **kwargs)
+                raise KeyboardInterrupt
+            return real_log(*arguments, **kwargs)
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "client_sent.csv"
+            with patch.object(generator.urllib.request, "urlopen", return_value=SlowResponse()), \
+                 patch.object(generator, "log_special_status", side_effect=interrupted_log), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                result = generator.run_traffic_generator(
+                    "127.0.0.1", 5000, "attack", 0.0, 50.0,
+                    20, None, 1, 1, 0.1, str(path)
+                )
+            with path.open(newline="", encoding="utf-8") as file:
+                rows = list(csv.DictReader(file))
+        assert interrupted_once and result["interrupted"]
+        assert result["dropped_capacity"] > 0
+        assert len(rows) == result["scheduled"]
+        assert len({row["request_id"] for row in rows}) == len(rows)
+
+
+def test_slow_console_does_not_delay_schedule():
+    import builtins
+
+    class SlowResponse:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *arguments):
+            pass
+
+        def read(self):
+            time.sleep(0.4)
+            return b"ok"
+
+    real_print = builtins.print
+
+    def slow_drop_print(*arguments, **kwargs):
+        if arguments and "DROPPED (Capacity Exhausted)" in str(arguments[0]):
+            time.sleep(0.1)
+        return real_print(*arguments, **kwargs)
+
+    with tempfile.TemporaryDirectory() as directory:
+        with patch.object(generator.urllib.request, "urlopen", return_value=SlowResponse()), \
+             patch("builtins.print", side_effect=slow_drop_print), \
+             contextlib.redirect_stdout(io.StringIO()):
+            result = generator.run_traffic_generator(
+                "127.0.0.1", 5000, "attack", 0.0, 50.0,
+                30, None, 1, 1, 1, str(Path(directory) / "client_sent.csv")
+            )
+    assert result["dropped_capacity"] > 0
+    assert result["scheduling_window_sec"] < 1.5
+
+
+def test_scheduled_time_uses_deadline():
+    class Response:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *arguments):
+            pass
+
+        def read(self):
+            return b"ok"
+
+    real_draw = generator.draw_request_profile
+
+    def delayed_draw(*arguments):
+        time.sleep(0.05)
+        return real_draw(*arguments)
+
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "client_sent.csv"
+        with patch.object(generator, "draw_request_profile", side_effect=delayed_draw), \
+             patch.object(generator.urllib.request, "urlopen", return_value=Response()), \
+             contextlib.redirect_stdout(io.StringIO()):
+            generator.run_traffic_generator(
+                "127.0.0.1", 5000, "attack", 0.0, 50.0,
+                5, None, 1, 5, 1, str(path)
+            )
+        with path.open(newline="", encoding="utf-8") as file:
+            rows = sorted(csv.DictReader(file), key=lambda row: int(row["request_id"]))
+    planned_times = [datetime.fromisoformat(row["scheduled_time"]) for row in rows]
+    planned_gaps_ms = [
+        (planned_times[index] - planned_times[index - 1]).total_seconds() * 1000
+        for index in range(1, len(planned_times))
+    ]
+    assert len(rows) == 5
+    assert all(abs(gap - 20.0) < 1.0 for gap in planned_gaps_ms)
+
+
+def test_request_construction_error_does_not_hang():
+    result = {}
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "client_sent.csv"
+
+        def run():
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    result["report"] = generator.run_traffic_generator(
+                        "127.0.0.1", 5000, "attack", 0.0, 10.0,
+                        1, None, 1, 1, 0.1, str(path)
+                    )
+            except BaseException as error:
+                result["error"] = error
+
+        with patch.object(generator.urllib.request, "Request", side_effect=ValueError("invalid request")):
+            runner = threading.Thread(target=run, daemon=True)
+            runner.start()
+            runner.join(2)
+        assert not runner.is_alive(), "Worker failure left the queue join blocked"
+        assert "error" not in result, result.get("error")
+        with path.open(newline="", encoding="utf-8") as file:
+            rows = list(csv.DictReader(file))
+    assert result["report"]["completed"] == 1
+    assert len(rows) == 1 and rows[0]["status_code"] == "ERR_ValueError"
+
+
+def test_trickling_body_reaches_total_timeout():
+    class EndlessResponse:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *arguments):
+            pass
+
+        def read1(self, size):
+            time.sleep(0.01)
+            return b"x"
+
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "client_sent.csv"
+        with patch.object(generator.urllib.request, "urlopen", return_value=EndlessResponse()), \
+             contextlib.redirect_stdout(io.StringIO()):
+            result = generator.run_traffic_generator(
+                "127.0.0.1", 5000, "attack", 0.0, 10.0,
+                1, None, 1, 1, 0.05, str(path)
+            )
+        with path.open(newline="", encoding="utf-8") as file:
+            rows = list(csv.DictReader(file))
+    assert result["completed"] == result["errors"] == 1
+    assert result["total_elapsed"] < 0.5
+    assert len(rows) == 1 and rows[0]["status_code"] == "ERR_TimeoutError"
+
+
 if __name__ == "__main__":
     test_legacy_runs()
     test_cli_safety()
@@ -230,4 +462,10 @@ if __name__ == "__main__":
     test_interrupt_during_drain()
     test_interrupt_after_worker_claim()
     test_slow_csv_does_not_delay_schedule()
+    test_no_request_after_final_report()
+    test_interrupt_during_drop_flush()
+    test_slow_console_does_not_delay_schedule()
+    test_scheduled_time_uses_deadline()
+    test_request_construction_error_does_not_hang()
+    test_trickling_body_reaches_total_timeout()
     print("client fixes passed")

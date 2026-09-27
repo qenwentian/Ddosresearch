@@ -22,7 +22,7 @@ Key Research Features:
 
 import argparse
 import csv
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import ipaddress
 import math
 from pathlib import Path
@@ -365,23 +365,33 @@ def worker_loop(work_queue, base_url, timeout, log_path, stats, stop_event,
             active_tasks[req_id] = (task, actual_start_iso)
 
         full_url = f"{base_url}{path}"
-        req = urllib.request.Request(
-            full_url,
-            headers={
-                "User-Agent": user_agent,
-                "X-Run-ID": run_id,
-                "X-Request-ID": str(req_id),
-                "X-Ground-Truth": ground_truth
-            }
-        )
-
         status_code = None
         start_perf = time.perf_counter()
 
         try:
+            req = urllib.request.Request(
+                full_url,
+                headers={
+                    "User-Agent": user_agent,
+                    "X-Run-ID": run_id,
+                    "X-Request-ID": str(req_id),
+                    "X-Ground-Truth": ground_truth
+                }
+            )
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 status_code = response.status
-                response.read()  # drain response body
+                # HTTPResponse.read1() lets us check between body chunks.
+                # Check the wall deadline between chunks so a trickling body
+                # cannot keep a Ctrl+C shutdown waiting forever.
+                if hasattr(response, "read1"):
+                    while True:
+                        chunk = response.read1(65536)
+                        if time.perf_counter() - start_perf >= timeout:
+                            raise TimeoutError("response body exceeded request timeout")
+                        if not chunk:
+                            break
+                else:
+                    response.read()
         except urllib.error.HTTPError as e:
             status_code = e.code
         except urllib.error.URLError as e:
@@ -543,6 +553,7 @@ def run_traffic_generator(target_host, target_port, mode, alpha, rate, num_reque
         workers.append(t)
 
     scheduling_start_perf = time.perf_counter()
+    scheduling_start_wall = datetime.now(timezone.utc)
     scheduled_deadline = scheduling_start_perf
     last_arrival_perf = scheduling_start_perf
     req_id = 0
@@ -599,7 +610,10 @@ def run_traffic_generator(target_host, target_port, mode, alpha, rate, num_reque
                 break
 
             req_id += 1
-            scheduled_time_iso = datetime.now(timezone.utc).isoformat()
+            scheduled_time_iso = (
+                scheduling_start_wall
+                + timedelta(seconds=scheduled_deadline - scheduling_start_perf)
+            ).isoformat()
             now_arrival_perf = time.perf_counter()
             actual_inter_arrival_ms = round((now_arrival_perf - last_arrival_perf) * 1000, 3) if req_id > 1 else 0.0
             last_arrival_perf = now_arrival_perf
