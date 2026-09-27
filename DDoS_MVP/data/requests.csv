@@ -1,0 +1,126 @@
+timestamp,source_ip,method,path,query_string,user_agent,response_ms,status
+2026-09-27T03:18:32.043129+00:00,127.0.0.1,GET,/,,TestClient/1.0,0.082,200
+2026-09-27T03:18:32.045896+00:00,127.0.0.1,GET,/news,,TestClient/1.0,0.053,200
+2026-09-27T03:18:32.047593+00:00,127.0.0.1,GET,/profile,,TestClient/1.0,0.042,200
+2026-09-27T03:18:32.049791+00:00,127.0.0.1,GET,/dashboard,,TestClient/1.0,0.047,200
+2026-09-27T03:18:32.051745+00:00,127.0.0.1,GET,/search,q=test,TestClient/1.0,0.087,200
+2026-09-27T03:44:05.619393+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.067,200
+2026-09-27T03:44:05.620020+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.053,200
+2026-09-27T03:44:05.621025+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.065,200
+2026-09-27T03:44:05.622030+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.044,200
+2026-09-27T03:44:05.622606+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.043,200
+2026-09-27T03:44:05.623975+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.891,404
+2026-09-27T03:44:05.624564+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.04,200
+2026-09-27T03:44:05.625783+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.163,200
+2026-09-27T03:44:05.626336+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.053,200
+2026-09-27T03:44:05.626859+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.033,200
+2026-09-27T03:44:05.627910+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.036,200
+2026-09-27T03:44:05.628555+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.065,200
+2026-09-27T03:44:05.629656+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.213,200
+2026-09-27T03:44:05.631963+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.128,404
+2026-09-27T03:44:05.631963+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.049,200
+2026-09-27T03:44:05.633021+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.037,200
+2026-09-27T03:44:05.633549+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.033,200
+2026-09-27T03:44:05.636049+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.091,200
+2026-09-27T03:44:05.637110+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.098,200
+2026-09-27T03:44:05.639233+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.036,200
+2026-09-27T03:44:05.639781+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.037,200
+2026-09-27T03:44:05.642039+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.058,200
+2026-09-27T03:44:05.643102+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.052,200
+2026-09-27T03:44:05.645199+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.071,200
+2026-09-27T03:44:05.646357+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.077,200
+2026-09-27T03:44:05.646885+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.12,404
+2026-09-27T03:44:05.649762+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.064,200
+2026-09-27T03:44:05.650433+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.112,404
+2026-09-27T03:44:05.650973+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.054,200
+2026-09-27T03:44:05.653287+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.054,200
+2026-09-27T03:44:05.655421+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.105,200
+2026-09-27T03:44:05.658195+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.055,200
+2026-09-27T03:44:05.659244+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.067,200
+2026-09-27T03:44:05.660412+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.051,200
+2026-09-27T03:44:05.661593+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.052,200
+2026-09-27T03:44:05.662253+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.069,200
+2026-09-27T03:44:05.663848+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.076,200
+2026-09-27T03:44:05.665481+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.052,200
+2026-09-27T03:44:05.665481+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.051,200
+2026-09-27T03:44:05.666005+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.117,404
+2026-09-27T03:44:05.666543+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.062,200
+2026-09-27T03:44:05.666543+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.094,404
+2026-09-27T03:44:05.667587+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.045,200
+2026-09-27T03:44:05.669723+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.052,200
+2026-09-27T03:44:05.671372+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.081,200
+2026-09-27T03:44:05.673013+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.074,200
+2026-09-27T03:44:05.674071+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.086,404
+2026-09-27T03:44:05.675112+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.054,200
+2026-09-27T03:44:05.676164+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.047,200
+2026-09-27T03:44:05.677236+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.045,200
+2026-09-27T03:44:05.678293+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.063,200
+2026-09-27T03:44:05.679348+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.057,200
+2026-09-27T03:44:05.680402+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.047,200
+2026-09-27T03:44:05.681024+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.07,200
+2026-09-27T03:44:05.681024+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.044,200
+2026-09-27T03:44:05.682099+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.117,404
+2026-09-27T03:44:05.684215+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.052,200
+2026-09-27T03:44:05.685305+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.048,200
+2026-09-27T03:44:05.687942+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.054,200
+2026-09-27T03:44:05.688972+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.062,200
+2026-09-27T03:44:05.689496+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.075,200
+2026-09-27T03:44:05.691126+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.104,404
+2026-09-27T03:44:05.691663+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.046,200
+2026-09-27T03:44:05.692731+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.045,200
+2026-09-27T03:44:05.694450+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.111,200
+2026-09-27T03:44:05.694970+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.069,200
+2026-09-27T03:44:05.695506+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.048,200
+2026-09-27T03:44:05.696234+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.055,200
+2026-09-27T03:44:05.699028+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.094,404
+2026-09-27T03:44:05.699554+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.069,200
+2026-09-27T03:44:05.701581+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.047,200
+2026-09-27T03:44:05.702635+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.041,200
+2026-09-27T03:44:05.703690+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.038,200
+2026-09-27T03:44:05.704743+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.06,200
+2026-09-27T03:44:05.706830+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.087,404
+2026-09-27T03:44:05.707345+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.045,200
+2026-09-27T03:44:05.708398+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.078,200
+2026-09-27T03:44:05.709456+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.036,200
+2026-09-27T03:44:05.709978+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.063,200
+2026-09-27T03:44:05.710526+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.042,200
+2026-09-27T03:44:05.711650+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.051,200
+2026-09-27T03:44:05.712767+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.063,200
+2026-09-27T03:44:05.713831+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.084,404
+2026-09-27T03:44:05.714358+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.035,200
+2026-09-27T03:44:05.715939+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.044,200
+2026-09-27T03:44:05.718063+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.059,200
+2026-09-27T03:44:05.719124+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.062,200
+2026-09-27T03:44:05.721839+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.094,404
+2026-09-27T03:44:05.722885+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.066,200
+2026-09-27T03:44:05.723408+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.053,200
+2026-09-27T03:44:05.723938+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.038,200
+2026-09-27T03:44:05.724992+00:00,127.0.0.1,GET,/search,q=test,StressTester/2.0 (Windows; x64),0.054,200
+2026-09-27T03:44:05.725514+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.086,200
+2026-09-27T03:44:05.725514+00:00,127.0.0.1,GET,/profile,,StressTester/2.0 (Windows; x64),0.035,200
+2026-09-27T03:44:05.726117+00:00,127.0.0.1,GET,/search,q=attack%2Cvalue%22quote,StressTester/2.0 (Windows; x64),0.051,200
+2026-09-27T03:44:05.728282+00:00,127.0.0.1,GET,/unknown_endpoint,,StressTester/2.0 (Windows; x64),0.092,404
+2026-09-27T03:44:05.729331+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.044,200
+2026-09-27T03:44:05.729856+00:00,127.0.0.1,GET,/news,,StressTester/2.0 (Windows; x64),0.057,200
+2026-09-27T03:44:05.740301+00:00,127.0.0.1,GET,/dashboard,,StressTester/2.0 (Windows; x64),0.053,200
+2026-09-27T03:44:05.740301+00:00,127.0.0.1,GET,/,,StressTester/2.0 (Windows; x64),0.044,200
+2026-09-27T04:44:11.534967+00:00,127.0.0.1,GET,/dashboard,,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0",0.074,200
+2026-09-27T04:44:11.580804+00:00,127.0.0.1,GET,/news,,Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0,0.084,200
+2026-09-27T04:44:11.628579+00:00,127.0.0.1,GET,/profile,,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0",0.052,200
+2026-09-27T04:44:11.859183+00:00,127.0.0.1,GET,/search,q=throughput,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0",0.114,200
+2026-09-27T04:44:11.868710+00:00,127.0.0.1,GET,/,,Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0,0.056,200
+2026-09-27T04:44:16.396700+00:00,127.0.0.1,GET,/search,q=heavy_query_9136,PrototypeBot/1.0 (Automated Script; AttackCondition),0.097,200
+2026-09-27T04:44:16.473992+00:00,127.0.0.1,GET,/search,q=heavy_query_2322,PrototypeBot/1.0 (Automated Script; AttackCondition),0.117,200
+2026-09-27T04:44:16.552248+00:00,127.0.0.1,GET,/search,q=heavy_query_9439,PrototypeBot/1.0 (Automated Script; AttackCondition),0.097,200
+2026-09-27T04:44:16.628973+00:00,127.0.0.1,GET,/search,q=heavy_query_8439,PrototypeBot/1.0 (Automated Script; AttackCondition),0.114,200
+2026-09-27T04:44:16.705137+00:00,127.0.0.1,GET,/search,q=heavy_query_1867,PrototypeBot/1.0 (Automated Script; AttackCondition),0.108,200
+2026-09-27T04:44:21.088273+00:00,127.0.0.1,GET,/,,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",0.049,200
+2026-09-27T04:44:21.140676+00:00,127.0.0.1,GET,/,,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",0.071,200
+2026-09-27T04:44:21.187720+00:00,127.0.0.1,GET,/,,PrototypeBot/1.0 (Automated Script; AttackCondition),0.056,200
+2026-09-27T04:44:21.264845+00:00,127.0.0.1,GET,/search,q=heavy_query_1453,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",0.095,200
+2026-09-27T04:44:21.294835+00:00,127.0.0.1,GET,/search,q=heavy_query_7757,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",0.066,200
+2026-09-27T04:44:25.396676+00:00,127.0.0.1,GET,/,,Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0,0.049,200
+2026-09-27T04:44:25.410719+00:00,127.0.0.1,GET,/profile,,Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0,0.048,200
+2026-09-27T04:44:25.509366+00:00,127.0.0.1,GET,/search,q=network,Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0,0.141,200
+2026-09-27T04:44:25.571033+00:00,127.0.0.1,GET,/,,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",0.102,200
+2026-09-27T04:44:25.615765+00:00,127.0.0.1,GET,/search,q=analysis,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",0.107,200
